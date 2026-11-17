@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Present Simple Homework — To Be vs. Action Verbs (Elementary)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      background-color: #F8FAF9;
+      color: #2D3748;
+    }
+
+    /* Sage Green Palette Helpers */
+    .bg-sage { background-color: #5B8A72; }
+    .bg-sage-dark { background-color: #48705C; }
+    .bg-mint { background-color: #E6F2EC; }
+    .text-sage { color: #5B8A72; }
+    .text-sage-dark { color: #3B5E4C; }
+    .border-sage { border-color: #5B8A72; }
+    .border-mint { border-color: #C3DFD0; }
+
+    /* Feedback Animations */
+    @keyframes popIn {
+      0% { transform: scale(0.96); }
+      50% { transform: scale(1.02); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes gentleShake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-5px); }
+      40% { transform: translateX(5px); }
+      60% { transform: translateX(-3px); }
+      80% { transform: translateX(3px); }
+    }
+
+    .animate-pop {
+      animation: popIn 0.28s ease-out;
+    }
+
+    .animate-shake {
+      animation: gentleShake 0.35s ease-in-out;
+    }
+
+    /* Smooth accordion transition */
+    .helper-content {
+      transition: all 0.25s ease-in-out;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Sticky Top Progress & Score Header -->
+  <header class="sticky top-0 z-30 bg-white/95 backdrop-blur border-b border-slate-200/90 shadow-sm">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 py-3.5 flex flex-wrap items-center justify-between gap-3">
+      
+      <!-- Title & Badge -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-sage text-white font-extrabold flex items-center justify-center text-base shadow-sm shrink-0">
+          HW
+        </div>
+        <div>
+          <h1 class="text-base sm:text-lg font-extrabold text-slate-800 leading-tight">
+            Present Simple Homework
+          </h1>
+          <p class="text-xs text-slate-500">To Be vs. Action Verbs • Elementary (A1)</p>
+        </div>
+      </div>
+
+      <!-- Progress, Score & Reset -->
+      <div class="flex items-center gap-2.5 sm:gap-3">
+        <div class="px-3 py-1.5 rounded-xl bg-slate-100 text-slate-700 text-xs sm:text-sm font-semibold">
+          Completed: <span id="completed-count" class="font-extrabold text-slate-900">0</span> / 20
+        </div>
+        <div class="px-3 py-1.5 rounded-xl bg-mint text-sage-dark text-xs sm:text-sm font-semibold border border-mint">
+          Score: <span id="score-count" class="font-extrabold">0</span> / 20
+        </div>
+        <button
+          onclick="resetHomework()"
+          class="px-3.5 py-1.5 rounded-xl border border-slate-300 text-slate-600 hover:bg-slate-100 hover:text-slate-900 text-xs sm:text-sm font-semibold transition cursor-pointer"
+        >
+          Reset Homework
+        </button>
+      </div>
+    </div>
+
+    <!-- Thin Progress Bar -->
+    <div class="w-full h-1.5 bg-slate-200">
+      <div id="top-progress-bar" class="h-full bg-sage transition-all duration-300" style="width: 0%"></div>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-7">
+
+    <!-- Collapsible Quick Grammar Helper -->
+    <section class="bg-white rounded-2xl border border-mint shadow-sm overflow-hidden">
+      <button
+        onclick="toggleGrammarHelper()"
+        class="w-full px-5 py-4 flex items-center justify-between text-left bg-mint/60 hover:bg-mint transition cursor-pointer"
+      >
+        <div class="flex items-center gap-2.5">
+          <span class="text-lg">💡</span>
+          <span class="font-bold text-sage-dark text-sm sm:text-base">Quick Grammar Helper (Click to Show / Hide)</span>
+        </div>
+        <svg id="helper-chevron" class="w-5 h-5 text-sage-dark transform rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+
+      <div id="grammar-helper-body" class="p-5 grid grid-cols-1 md:grid-cols-2 gap-4 bg-white">
+        <!-- Rule 1: TO BE -->
+        <div class="p-4 rounded-xl bg-emerald-50/70 border border-emerald-200">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="px-2.5 py-0.5 rounded-lg bg-sage text-white text-xs font-extrabold uppercase">Rule 1</span>
+            <h3 class="font-extrabold text-slate-800 text-base">TO BE (am / is / are)</h3>
+          </div>
+          <p class="text-sm text-slate-700 mb-2.5 leading-relaxed">
+            Use <strong>TO BE</strong> when there is <strong>NO action verb</strong>. Use it for names, ages, feelings, jobs, places, and adjectives.
+          </p>
+          <ul class="text-xs sm:text-sm text-slate-600 space-y-1">
+            <li>• <strong>I</strong> am / am not (Am I...?)</li>
+            <li>• <strong>He / She / It</strong> is / isn't (Is she...?)</li>
+            <li>• <strong>You / We / They</strong> are / aren't (Are you...?)</li>
+          </ul>
+        </div>
+
+        <!-- Rule 2: Action Verbs -->
+        <div class="p-4 rounded-xl bg-amber-50/70 border border-amber-200">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="px-2.5 py-0.5 rounded-lg bg-amber-500 text-white text-xs font-extrabold uppercase">Rule 2</span>
+            <h3 class="font-extrabold text-slate-800 text-base">Action Verbs (go, live, like...)</h3>
+          </div>
+          <p class="text-sm text-slate-700 mb-2.5 leading-relaxed">
+            Use <strong>DO / DOES / -s</strong> when there <strong>IS an action verb</strong> (<em>go, like, live, work, play, have, eat, sleep</em>).
+          </p>
+          <ul class="text-xs sm:text-sm text-slate-600 space-y-1">
+            <li>• <strong>I / You / We / They:</strong> verb / <strong>don't</strong> + verb / <strong>Do</strong> ... verb?</li>
+            <li>• <strong>He / She / It:</strong> verb<strong>-s</strong> / <strong>doesn't</strong> + verb / <strong>Does</strong> ... verb?</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- PART 1: Everyday Situations & Mini-Dialogues -->
+    <section class="space-y-4">
+      <div class="border-l-4 border-sage pl-3.5">
+        <span class="text-xs font-bold uppercase tracking-wider text-sage">Part 1 • Questions 1–10</span>
+        <h2 class="text-xl sm:text-2xl font-extrabold text-slate-800">Everyday Situations & Mini-Dialogues</h2>
+        <p class="text-sm text-slate-500">Read each short situation or conversation and choose the best answer.</p>
+      </div>
+
+      <div id="part-1-container" class="space-y-4">
+        <!-- Questions 1-10 render here -->
+      </div>
+    </section>
+
+    <!-- PART 2: Complete the Sentences -->
+    <section class="space-y-4 pt-3">
+      <div class="border-l-4 border-amber-500 pl-3.5">
+        <span class="text-xs font-bold uppercase tracking-wider text-amber-600">Part 2 • Questions 11–20</span>
+        <h2 class="text-xl sm:text-2xl font-extrabold text-slate-800">Complete the Sentences</h2>
+        <p class="text-sm text-slate-500">Check if there is an action verb or not, and choose the right form.</p>
+      </div>
+
+      <div id="part-2-container" class="space-y-4">
+        <!-- Questions 11-20 render here -->
+      </div>
+    </section>
+
+    <!-- Final Homework Results Summary Card -->
+    <section id="results-section" class="pt-4 pb-8">
+      <!-- Renders dynamically once all 20 questions are answered (or shows progress prompt) -->
+    </section>
+
+  </main>
+
+  <script>
+    // ==========================================
+    // HOMEWORK DATA (20 ELEMENTARY QUESTIONS)
+    // ==========================================
+    const homeworkQuestions = [
+      // PART 1: Everyday Situations & Mini-Dialogues (1-10)
+      {
+        id: 1,
+        part: 1,
+        context: "At the airport:",
+        text: "Excuse me, ___ you from Spain?",
+        options: ["Are", "Do", "Is"],
+        answer: "Are",
+        correctExplanation: "Correct! There is no action verb here ('from Spain' is a place), so we use 'Are' with 'you'.",
+        wrongExplanation: "Not quite! There is no action verb in this sentence. With 'you' and a place ('from Spain'), use 'Are'."
+      },
+      {
+        id: 2,
+        part: 1,
+        context: "In a café — A: Would you like some coffee?",
+        text: "B: No, thank you. I ___ drink coffee in the morning.",
+        options: ["don't", "am not", "doesn't"],
+        answer: "don't",
+        correctExplanation: "Great job! 'Drink' is an action verb, so we use 'don't' for a negative sentence with 'I'.",
+        wrongExplanation: "Look closely! 'Drink' is an action verb. Never use 'am not' before a base action verb — use 'don't' with 'I'."
+      },
+      {
+        id: 3,
+        part: 1,
+        context: "Walking in the park:",
+        text: "Look at that dog! It ___ very big.",
+        options: ["is", "does", "are"],
+        answer: "is",
+        correctExplanation: "Correct! 'Big' is an adjective (no action), so we use 'is' with 'it'.",
+        wrongExplanation: "Not quite! 'Very big' describes the dog (no action verb), so we use 'is' with 'it'."
+      },
+      {
+        id: 4,
+        part: 1,
+        context: "Talking about family — A: My sister has a new apartment.",
+        text: "B: Oh, nice! Where ___ your sister live?",
+        options: ["does", "is", "do"],
+        answer: "does",
+        correctExplanation: "Well done! 'Live' is an action verb, and 'your sister' = 'she', so we ask with 'does'.",
+        wrongExplanation: "Remember: 'Live' is an action verb! Because 'your sister' is one person (she), we use 'does' in questions."
+      },
+      {
+        id: 5,
+        part: 1,
+        context: "Friday evening at home:",
+        text: "We ___ tired today, so we stay at home.",
+        options: ["are", "do", "is"],
+        answer: "are",
+        correctExplanation: "Correct! 'Tired' is a feeling (no action), so we use 'are' with 'we'.",
+        wrongExplanation: "Not quite! 'Tired' is a feeling, not an action verb. With 'we', use 'are'."
+      },
+      {
+        id: 6,
+        part: 1,
+        context: "Ordering dinner:",
+        text: "Tom ___ like pizza, he prefers pasta.",
+        options: ["doesn't", "isn't", "don't"],
+        answer: "doesn't",
+        correctExplanation: "Spot on! 'Like' is an action verb, and 'Tom' = 'he', so the negative form is 'doesn't'.",
+        wrongExplanation: "'Like' is an action verb! For negative sentences with 'Tom' (he), we use 'doesn't' + base verb."
+      },
+      {
+        id: 7,
+        part: 1,
+        context: "On the phone — A: Hi! Can I visit you now?",
+        text: "B: Sure! ___ your parents at home right now?",
+        options: ["Are", "Do", "Is"],
+        answer: "Are",
+        correctExplanation: "Correct! 'At home' is a place (no action), and 'parents' is plural (they), so we use 'Are'.",
+        wrongExplanation: "There is no action verb here ('at home' is a location), and 'parents' means 'they', so use 'Are'."
+      },
+      {
+        id: 8,
+        part: 1,
+        context: "Talking about pets:",
+        text: "My cat ___ on my bed every night.",
+        options: ["sleeps", "is sleep", "sleep"],
+        answer: "sleeps",
+        correctExplanation: "Awesome! 'Sleep' is an action verb, and 'my cat' = 'it', so we add '-s' ('sleeps').",
+        wrongExplanation: "'Sleep' is an action verb, so we don't use 'is'. With 'my cat' (it), add '-s' to get 'sleeps'."
+      },
+      {
+        id: 9,
+        part: 1,
+        context: "At the hospital — A: Are you a doctor here?",
+        text: "B: No, I ___ a doctor, I am a teacher.",
+        options: ["am not", "don't", "isn't"],
+        answer: "am not",
+        correctExplanation: "Correct! 'A doctor' is a job (no action verb), so we say 'I am not'.",
+        wrongExplanation: "There is no action verb here — 'a doctor' is a profession! With 'I', the negative of 'to be' is 'am not'."
+      },
+      {
+        id: 10,
+        part: 1,
+        context: "Before class — A: Hurry up! We are late!",
+        text: "B: Really? What time ___ the lesson start?",
+        options: ["does", "is", "do"],
+        answer: "does",
+        correctExplanation: "Great! 'Start' is an action verb, and 'the lesson' = 'it', so we use 'does' in the question.",
+        wrongExplanation: "'Start' is an action verb! Because 'the lesson' is singular (it), use 'does' to make a question."
+      },
+
+      // PART 2: Complete the Sentences (11-20)
+      {
+        id: 11,
+        part: 2,
+        text: "___ she happy with her new job?",
+        options: ["Is", "Does", "Are"],
+        answer: "Is",
+        correctExplanation: "Correct! 'Happy' is a feeling/adjective (no action), so we use 'Is' with 'she'.",
+        wrongExplanation: "Look for a verb: 'happy' is an adjective, not an action! With 'she', use 'Is'."
+      },
+      {
+        id: 12,
+        part: 2,
+        text: "They ___ have a car, so they take the bus.",
+        options: ["don't", "aren't", "doesn't"],
+        answer: "don't",
+        correctExplanation: "Yes! 'Have' is an action/possession verb, so with 'they' we use 'don't'.",
+        wrongExplanation: "'Have' is a main verb here, so we don't use 'aren't'. With 'they', use 'don't'."
+      },
+      {
+        id: 13,
+        part: 2,
+        text: "She ___ English every evening.",
+        options: ["studies", "is study", "study"],
+        answer: "studies",
+        correctExplanation: "Excellent! 'Study' is an action verb. With 'she', 'study' changes to 'studies' (-ies).",
+        wrongExplanation: "'Study' is an action verb, so don't use 'is'. With 'she', we add '-s/-es' -> 'studies'."
+      },
+      {
+        id: 14,
+        part: 2,
+        text: "Why ___ you sad today?",
+        options: ["are", "do", "is"],
+        answer: "are",
+        correctExplanation: "Correct! 'Sad' is a feeling (no action), so we use 'are' with 'you'.",
+        wrongExplanation: "'Sad' is a feeling, not an action verb! With 'you', always use 'are'."
+      },
+      {
+        id: 15,
+        part: 2,
+        text: "He ___ at work today because it is Sunday.",
+        options: ["isn't", "doesn't", "aren't"],
+        answer: "isn't",
+        correctExplanation: "Right! 'At work' is a place (no action verb), so with 'he' we use 'isn't'.",
+        wrongExplanation: "There is no action verb in this part ('at work' is a place). With 'he', use 'isn't'."
+      },
+      {
+        id: 16,
+        part: 2,
+        text: "___ your brother play video games?",
+        options: ["Does", "Is", "Do"],
+        answer: "Does",
+        correctExplanation: "Correct! 'Play' is an action verb, and 'your brother' = 'he', so we ask with 'Does'.",
+        wrongExplanation: "'Play' is an action verb! Because 'your brother' is one person (he), start the question with 'Does'."
+      },
+      {
+        id: 17,
+        part: 2,
+        text: "My friends ___ very friendly and kind.",
+        options: ["are", "do", "is"],
+        answer: "are",
+        correctExplanation: "Yes! 'Friendly and kind' are adjectives (no action), and 'friends' is plural, so we use 'are'.",
+        wrongExplanation: "'Friendly' describes the friends (no action verb), and 'my friends' = 'they', so use 'are'."
+      },
+      {
+        id: 18,
+        part: 2,
+        text: "I usually ___ breakfast at 8 AM.",
+        options: ["eat", "am eat", "eats"],
+        answer: "eat",
+        correctExplanation: "Spot on! 'Eat' is an action verb, and with 'I' we use the base form 'eat' (no -s).",
+        wrongExplanation: "'Eat' is an action verb, so we don't need 'am'. With 'I', use the simple base verb 'eat'."
+      },
+      {
+        id: 19,
+        part: 2,
+        text: "___ this your bag on the chair?",
+        options: ["Is", "Does", "Are"],
+        answer: "Is",
+        correctExplanation: "Correct! 'Your bag' is a thing (no action), so we ask 'Is this...?'",
+        wrongExplanation: "There is no action verb here! Asking about one object ('this bag'), we use 'Is'."
+      },
+      {
+        id: 20,
+        part: 2,
+        text: "Anna and Max ___ live in London anymore.",
+        options: ["don't", "aren't", "doesn't"],
+        answer: "don't",
+        correctExplanation: "Awesome finish! 'Live' is an action verb, and 'Anna and Max' = 'they' (2 people), so we use 'don't'.",
+        wrongExplanation: "'Live' is an action verb! Because 'Anna and Max' are two people (they), use 'don't'."
+      }
+    ];
+
+    // User state: { [questionId]: selectedOption }
+    const userAnswers = {};
+    let isHelperOpen = true;
+
+    // ==========================================
+    // RENDER & INTERACTION LOGIC
+    // ==========================================
+    function renderHomework() {
+      const part1Container = document.getElementById('part-1-container');
+      const part2Container = document.getElementById('part-2-container');
+
+      part1Container.innerHTML = homeworkQuestions
+        .filter(q => q.part === 1)
+        .map(q => renderQuestionCard(q))
+        .join('');
+
+      part2Container.innerHTML = homeworkQuestions
+        .filter(q => q.part === 2)
+        .map(q => renderQuestionCard(q))
+        .join('');
+
+      updateHeaderAndSummary();
+    }
+
+    function renderQuestionCard(item) {
+      const chosen = userAnswers[item.id];
+      const isAnswered = chosen !== undefined;
+      const isCorrect = chosen === item.answer;
+
+      // Dynamic card border & animation
+      let cardClasses = "bg-white rounded-2xl border p-5 shadow-sm transition-all ";
+      if (!isAnswered) {
+        cardClasses += "border-slate-200/90 hover:border-sage/60";
+      } else if (isCorrect) {
+        cardClasses += "border-emerald-400 bg-emerald-50/20 animate-pop";
+      } else {
+        cardClasses += "border-rose-300 bg-rose-50/20 animate-shake";
+      }
+
+      // Format sentence blank
+      const formattedText = item.text.replace(
+        '___',
+        isAnswered
+          ? `<span class="inline-block px-2 py-0.5 mx-0.5 rounded-lg font-extrabold underline ${
+              isCorrect ? 'bg-mint text-sage-dark' : 'bg-rose-100 text-rose-700'
+            }">${chosen}</span>`
+          : `<span class="inline-block w-16 border-b-2 border-slate-400 mx-1"></span>`
+      );
+
+      return `
+        <div id="q-card-${item.id}" class="${cardClasses}">
+          <div class="flex items-start gap-3.5">
+            <!-- Number Badge -->
+            <div class="w-8 h-8 rounded-xl font-bold text-sm flex items-center justify-center shrink-0 mt-0.5 ${
+              !isAnswered
+                ? 'bg-slate-100 text-slate-600'
+                : isCorrect
+                ? 'bg-sage text-white'
+                : 'bg-rose-500 text-white'
+            }">
+              ${isAnswered ? (isCorrect ? '✓' : '!') : item.id}
+            </div>
+
+            <div class="flex-1 space-y-3">
+              <!-- Optional Mini-Dialogue Context -->
+              ${item.context ? `<p class="text-xs sm:text-sm font-medium text-slate-500 italic">${item.context}</p>` : ''}
+
+              <!-- Main Sentence -->
+              <p class="text-base sm:text-lg font-semibold text-slate-800 leading-snug">
+                ${formattedText}
+              </p>
+
+              <!-- Answer Options -->
+              <div class="flex flex-wrap items-center gap-2.5 pt-1">
+                ${item.options.map(opt => {
+                  let btnClass = "px-4 py-2 rounded-xl text-sm sm:text-base font-bold border transition cursor-pointer ";
+                  if (!isAnswered) {
+                    btnClass += "bg-slate-50 hover:bg-mint hover:border-sage text-slate-700 border-slate-200";
+                  } else if (opt === item.answer) {
+                    btnClass += "bg-sage text-white border-sage shadow-sm cursor-default";
+                  } else if (opt === chosen && !isCorrect) {
+                    btnClass += "bg-rose-500 text-white border-rose-500 cursor-default";
+                  } else {
+                    btnClass += "bg-slate-50 text-slate-400 border-slate-200 opacity-60 cursor-default";
+                  }
+
+                  return `
+                    <button
+                      onclick="handleSelectAnswer(${item.id}, '${opt.replace("'", "\\'")}')"
+                      ${isAnswered ? 'disabled' : ''}
+                      class="${btnClass}"
+                    >
+                      ${opt}
+                    </button>
+                  `;
+                }).join('')}
+              </div>
+
+              <!-- Instant Feedback Banner -->
+              ${isAnswered ? `
+                <div class="mt-3 p-3.5 rounded-xl text-sm leading-relaxed flex items-start gap-2.5 ${
+                  isCorrect
+                    ? 'bg-mint/90 border border-mint text-sage-dark'
+                    : 'bg-rose-50 border border-rose-200 text-rose-900'
+                }">
+                  <span class="text-base shrink-0">${isCorrect ? '🌟' : '💡'}</span>
+                  <div>
+                    <p class="font-medium">
+                      ${isCorrect ? item.correctExplanation : item.wrongExplanation}
+                    </p>
+                    ${!isCorrect ? `<p class="mt-1 text-xs font-bold text-emerald-800">Correct answer: "${item.answer}"</p>` : ''}
+                  </div>
+                </div>
+              ` : ''}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function handleSelectAnswer(questionId, option) {
+      if (userAnswers[questionId] !== undefined) return; // Lock once answered
+      userAnswers[questionId] = option;
+
+      // Re-render only the updated card for crisp animation
+      const item = homeworkQuestions.find(q => q.id === questionId);
+      const cardEl = document.getElementById(`q-card-${questionId}`);
+      if (cardEl && item) {
+        cardEl.outerHTML = renderQuestionCard(item);
+      }
+
+      updateHeaderAndSummary();
+    }
+
+    function updateHeaderAndSummary() {
+      const total = homeworkQuestions.length;
+      const completed = Object.keys(userAnswers).length;
+      const score = homeworkQuestions.filter(q => userAnswers[q.id] === q.answer).length;
+
+      document.getElementById('completed-count').textContent = completed;
+      document.getElementById('score-count').textContent = score;
+      document.getElementById('top-progress-bar').style.width = `${(completed / total) * 100}%`;
+
+      const resultsSection = document.getElementById('results-section');
+
+      if (completed < total) {
+        const remaining = total - completed;
+        resultsSection.innerHTML = `
+          <div class="bg-white rounded-2xl border border-slate-200 p-6 text-center shadow-sm">
+            <p class="text-sm sm:text-base font-semibold text-slate-600">
+              Keep going! Answer <span class="text-sage font-extrabold">${remaining}</span> more ${remaining === 1 ? 'question' : 'questions'} to see your final homework results.
+            </p>
+          </div>
+        `;
+      } else {
+        const percentage = Math.round((score / total) * 100);
+        let badgeEmoji = "🏆";
+        let heading = "Amazing Work!";
+        let message = "You understand Present Simple with 'to be' and action verbs very well!";
+
+        if (percentage < 60) {
+          badgeEmoji = "💪";
+          heading = "Good Effort! Keep Practicing!";
+          message = "Review the Quick Grammar Helper at the top and try again — you will do even better next time!";
+        } else if (percentage < 85) {
+          badgeEmoji = "👏";
+          heading = "Great Job!";
+          message = "You are doing really well! Check the explanations above for any tricky questions.";
+        }
+
+        resultsSection.innerHTML = `
+          <div class="bg-white rounded-3xl border-2 border-sage p-7 sm:p-9 text-center shadow-md animate-pop">
+            <div class="text-4xl sm:text-5xl mb-3">${badgeEmoji}</div>
+            <span class="inline-block px-3.5 py-1 rounded-full bg-mint text-sage-dark text-xs font-extrabold uppercase tracking-wider mb-2">
+              Homework Results
+            </span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-800 mb-2">${heading}</h2>
+            <p class="text-slate-600 max-w-lg mx-auto mb-6 text-sm sm:text-base">${message}</p>
+
+            <div class="inline-flex items-center justify-center gap-6 bg-slate-50 border border-slate-200 px-8 py-4 rounded-2xl mb-6">
+              <div>
+                <div class="text-xs font-bold uppercase text-slate-400">Total Score</div>
+                <div class="text-3xl font-extrabold text-sage">${score} / ${total}</div>
+              </div>
+              <div class="w-px h-10 bg-slate-200"></div>
+              <div>
+                <div class="text-xs font-bold uppercase text-slate-400">Accuracy</div>
+                <div class="text-3xl font-extrabold text-slate-800">${percentage}%</div>
+              </div>
+            </div>
+
+            <div>
+              <button
+                onclick="resetHomework()"
+                class="px-7 py-3.5 rounded-2xl bg-sage hover:bg-sage-dark text-white font-bold text-base shadow-sm transition cursor-pointer"
+              >
+                Try Again
+              </button>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function toggleGrammarHelper() {
+      isHelperOpen = !isHelperOpen;
+      const body = document.getElementById('grammar-helper-body');
+      const chevron = document.getElementById('helper-chevron');
+
+      if (isHelperOpen) {
+        body.classList.remove('hidden');
+        chevron.classList.add('rotate-180');
+      } else {
+        body.classList.add('hidden');
+        chevron.classList.remove('rotate-180');
+      }
+    }
+
+    function resetHomework() {
+      for (const key in userAnswers) {
+        delete userAnswers[key];
+      }
+      renderHomework();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Initialize worksheet on page load
+    window.onload = function () {
+      renderHomework();
+    };
+  </script>
+</body>
+</html>
